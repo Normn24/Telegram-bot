@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
+
 const { getData } = require("./db/db")
 const foods = getData();
 
@@ -9,8 +10,6 @@ const tele = window.Telegram.WebApp
 
 function App() {
   const [cartItems, setCartItems] = useState([])
-
-
 
   useEffect(() => {
     tele.ready();
@@ -42,13 +41,9 @@ function App() {
   }
 
   const onCheckout = () => {
-    if (cartItems.length === 0) {
-      tele.MainButton.style.display = "none";
-    }
     tele.MainButton.show();
     tele.MainButton.text = "Pay ;)";
   }
-
 
   return (
     <>
