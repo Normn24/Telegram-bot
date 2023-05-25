@@ -1,0 +1,11 @@
+.cart__container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+  margin: 5px 12px;
+}
+
+.cart__price--hidden{
+  display: none;
+}
