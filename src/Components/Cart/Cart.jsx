@@ -9,13 +9,13 @@ function Cart({ cartItems, onCheckout }) {
       {cartItems.length === 0
         ? "No items in cart "
         : `Total Price: ${totalPrice.toFixed(2)}`}
-
       <Button
         title={`${cartItems.length === 0 ? "Order!" : "Checkout"} `}
         type={"checkout"}
         disable={cartItems.length === 0 ? true : false}
         onClick={onCheckout}
       />
+      module.exports = {totalPrice};
     </div>
   );
 }

@@ -3,6 +3,7 @@ import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
 const { getData } = require("./db/db")
+const { totalPrice } = require("./Components/Cart/Cart")
 const foods = getData();
 
 const tele = window.Telegram.WebApp
@@ -42,7 +43,7 @@ function App() {
   }
 
   const onCheckout = () => {
-    tele.MainButton.text = "Pay ;)";
+    tele.MainButton.text = `Pay ${totalPrice}`;
     tele.MainButton.show();
   }
 
