@@ -21,8 +21,8 @@
 
 .btn.remove{
   background-color: rgb(197, 64, 41);
-  /* margin-left: 6px; */
-  /* margin-right: 2px;  */
+  margin-left: 6px;
+  margin-right: 2px; 
 }
 
 .btn.checkout{
