@@ -42,8 +42,12 @@ function App() {
   }
 
   const onCheckout = () => {
-    tele.MainButton.text = "Pay ;)";
-    tele.MainButton.show();
+    if (cartItems !== 0) {
+      tele.MainButton.text = "Pay ;)";
+      tele.MainButton.show();
+    } else {
+      tele.MainButton.hide();
+    }
   }
 
   return (
