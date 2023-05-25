@@ -42,11 +42,10 @@ function App() {
   }
 
   const onCheckout = () => {
-    if (cartItems.length === 0) {
+    if (cartItems.length !== 0) {
       tele.MainButton.hide();
-    } else {
+      // tele.MainButton.show();
       tele.MainButton.text = "Pay ;)";
-      tele.MainButton.show();
     }
   }
 
