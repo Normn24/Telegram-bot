@@ -42,7 +42,7 @@ function App() {
 
   if (cartItems.length === 0) {
     tele.MainButton.hide();
-    tele.MainButton.text = "Pay ;)";
+    tele.MainButton.text = "VIEW ORDER ;)";
   } else {
     tele.MainButton.show()
   }
