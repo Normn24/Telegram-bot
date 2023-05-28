@@ -5,10 +5,9 @@
 .card{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 150px;
-  height: 230px;
-  border: 2px solid var(--primary-color);
+  /* justify-content: space-between; */
+  width: 105px;
+  height: 150px;
   padding: 0.5rem 0.3rem;
   margin: 13px 10px;
   position: relative;
@@ -18,15 +17,17 @@
 .card__title{
   font-weight: 400;
   text-align: center;
+  margin: 10px 0px;
 }
 
 .card__title .card__price{
   font-weight: bold;
+  font-size: small  ;
 }
 
 .image__container{
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   margin: 0 auto;
 }
 

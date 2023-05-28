@@ -13,7 +13,7 @@ export function getData() {
     { title: "Coca", price: 3.5, Image: cocaImg, id: 3 },
     { title: "Kebab", price: 13.99, Image: kebabImg, id: 4 },
     { title: "Salad", price: 6.5, Image: saladImg, id: 5 },
-    { title: "Bottle of water", price: 0.99, Image: waterImg, id: 6 },
+    { title: "Water", price: 0.99, Image: waterImg, id: 6 },
     { title: "Ice cream", price: 2.99, Image: iceCreamImg, id: 7 },
   ];
 }
