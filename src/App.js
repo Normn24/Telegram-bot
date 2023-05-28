@@ -40,15 +40,15 @@ function App() {
     }
   }
 
-  const onCheckout = () => {
-    tele.MainButton.show();
-    tele.MainButton.text = "Pay ;)";
-  }
+  // const onCheckout = () => {
+  tele.MainButton.show();
+  //   tele.MainButton.text = "Pay ;)";
+  // }
 
   return (
     <>
       <h1 className='heading'>Order foods</h1>
-      <Cart cartItems={cartItems} onCheckout={onCheckout} />
+      <Cart cartItems={cartItems} />
       <div className='cards__container'>
         {foods.map(food => {
           return <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />;
