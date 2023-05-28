@@ -16,12 +16,9 @@ function Cart({ cartItems, onCheckout }) {
       {cartItems.length === 0
         ? "No items in cart "
         : `Total Price: ${totalPrice.toFixed(2)}`}
+      {cartItems.length === 0 ? tele.MainButton.hide() : tele.MainButton.show()}
       <Button
-        title={`${
-          cartItems.length === 0
-            ? tele.MainButton.hide()
-            : tele.MainButton.show()
-        } `}
+        // title={`${cartItems.length === 0 ? (tele.MainButton.hide()) : (tele.MainButton.show())} `}
         type={"checkout"}
         disable={cartItems.length === 0 ? true : false}
         onClick={onCheckout}
