@@ -40,8 +40,10 @@ function App() {
     }
   }
 
+  cartItems.length === 0 ? tele.MainButton.hide() : tele.MainButton.show()
+
   // const onCheckout = () => {
-  tele.MainButton.show();
+  // tele.MainButton.show();
   //   tele.MainButton.text = "Pay ;)";
   // }
 
