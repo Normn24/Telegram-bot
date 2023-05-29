@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -12,6 +12,7 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
+  const [showOrder, setShowOrder] = useState(false);
 
   useEffect(() => {
     tele.ready();
@@ -48,9 +49,7 @@ function App() {
   } else {
     tele.MainButton.show();
     tele.MainButton.text = "VIEW ORDER ;)";
-    tele.MainButton.onclick = () => {
-      window.location.href = '/cart';
-    }
+    tele.MainButton.onClick = () => setShowOrder(true);
   }
 
   return (
@@ -62,7 +61,7 @@ function App() {
         />
         <Route
           path="/order"
-          element={<OrderPage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />}
+          element={showOrder ? <OrderPage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} /> : null}
         />
       </Routes>
     </Router>
@@ -70,12 +69,6 @@ function App() {
 }
 
 function HomePage({ cartItems, onAdd, onRemove }) {
-  const navigate = useNavigate(); // Access the navigate function
-
-  const handleMainButtonClick = () => {
-    navigate('/order'); // Navigate to the '/order' path when the MainButton is clicked
-  };
-
   return (
     <>
       <h1 className='heading'>Order foods</h1>
@@ -85,19 +78,16 @@ function HomePage({ cartItems, onAdd, onRemove }) {
           <Card
             food={food}
             key={food.id}
-            onAdd={() => onAdd(food)} // Pass a function that calls onAdd with the food item
-            onRemove={() => onRemove(food)} // Pass a function that calls onRemove with the food item
+            onAdd={() => onAdd(food)}
+            onRemove={() => onRemove(food)}
           />
         ))}
       </div>
-      <button onClick={handleMainButtonClick} className="main-button">
-        MainButton
-      </button>
     </>
   );
 }
 
-function OrderPage({ cartItems, onAdd, onRemove }) {
+function OrderPage({ cartItems, onAdd, onRemove, setShowOrder }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -108,7 +98,7 @@ function OrderPage({ cartItems, onAdd, onRemove }) {
       <h1>Order Summary</h1>
       <Cart cartItems={cartItems} />
       <h2>Total Price: ${totalPrice}</h2>
-      <Link to="/">Edit Order</Link>
+      <Link to="/" onClick={() => setShowOrder(false)}>Edit Order</Link>
     </>
   );
 }
