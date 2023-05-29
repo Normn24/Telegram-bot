@@ -48,6 +48,9 @@ function App() {
   } else {
     tele.MainButton.show();
     tele.MainButton.text = "VIEW ORDER ;)";
+    tele.MainButton.onclick = () => {
+      window.location.href = '/cart';
+    }
   }
 
   return (
