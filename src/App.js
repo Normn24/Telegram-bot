@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -12,6 +12,7 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate(); // Hook to programmatically navigate
 
   useEffect(() => {
     tele.ready();
@@ -50,6 +51,10 @@ function App() {
     tele.MainButton.text = "VIEW ORDER ;)";
   }
 
+  const handleMainButtonClick = () => {
+    navigate('/order'); // Navigate to the /order route when MainButton is clicked
+  };
+
   return (
     <Router>
       <Routes>
@@ -76,8 +81,8 @@ function HomePage({ cartItems, onAdd, onRemove }) {
           <Card
             food={food}
             key={food.id}
-            onAdd={() => onAdd(food)} // Pass a function that calls onAdd with the food item
-            onRemove={() => onRemove(food)} // Pass a function that calls onRemove with the food item
+            onAdd={() => onAdd(food)}
+            onRemove={() => onRemove(food)}
           />
         ))}
       </div>
