@@ -53,7 +53,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage cartItems={cartItems} />} />
+        <Route
+          path="/"
+          element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />}
+        />
         <Route
           path="/order"
           element={<OrderPage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />}
@@ -73,15 +76,14 @@ function HomePage({ cartItems, onAdd, onRemove }) {
           <Card
             food={food}
             key={food.id}
-            onAdd={onAdd} // Pass onAdd as a prop
-            onRemove={onRemove} // Pass onRemove as a prop
+            onAdd={() => onAdd(food)} // Pass a function that calls onAdd with the food item
+            onRemove={() => onRemove(food)} // Pass a function that calls onRemove with the food item
           />
         ))}
       </div>
     </>
   );
 }
-
 
 function OrderPage({ cartItems, onAdd, onRemove }) {
   const totalPrice = cartItems.reduce(
