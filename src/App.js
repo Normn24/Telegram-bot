@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { createBrowserHistory as useHistory } from 'history';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -12,7 +12,7 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
-  const [showOrder, setShowOrder] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     tele.ready();
@@ -44,26 +44,26 @@ function App() {
     }
   };
 
-  if (cartItems.length === 0) {
-    tele.MainButton.hide();
-  } else {
-    tele.MainButton.show();
-    tele.MainButton.text = "VIEW ORDER ;)";
-    tele.MainButton.onClick = () => setShowOrder(true);
-  }
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      tele.MainButton.hide();
+    } else {
+      tele.MainButton.show();
+      tele.MainButton.text = "VIEW ORDER ;)";
+    }
+  }, [cartItems]);
+
+  const handleMainButtonClick = () => {
+    history.push('/order');
+  };
 
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />}
-        />
-        <Route
-          path="/order"
-          element={showOrder ? <OrderPage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} /> : null}
-        />
+        <Route path="/" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
+        <Route path="/order" element={<OrderPage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
       </Routes>
+      <TeleMainButton onClick={handleMainButtonClick} />
     </Router>
   );
 }
@@ -75,19 +75,14 @@ function HomePage({ cartItems, onAdd, onRemove }) {
       <Cart cartItems={cartItems} />
       <div className='cards__container'>
         {foods.map((food) => (
-          <Card
-            food={food}
-            key={food.id}
-            onAdd={() => onAdd(food)}
-            onRemove={() => onRemove(food)}
-          />
+          <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
         ))}
       </div>
     </>
   );
 }
 
-function OrderPage({ cartItems, onAdd, onRemove, setShowOrder }) {
+function OrderPage({ cartItems, onAdd, onRemove }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -98,9 +93,20 @@ function OrderPage({ cartItems, onAdd, onRemove, setShowOrder }) {
       <h1>Order Summary</h1>
       <Cart cartItems={cartItems} />
       <h2>Total Price: ${totalPrice}</h2>
-      <Link to="/" onClick={() => setShowOrder(false)}>Edit Order</Link>
+      <Link to="/">Edit Order</Link>
     </>
   );
+}
+
+function TeleMainButton({ onClick }) {
+  useEffect(() => {
+    tele.MainButton.onClick = onClick;
+    return () => {
+      tele.MainButton.onClick = null;
+    };
+  }, [onClick]);
+
+  return null;
 }
 
 export default App;
