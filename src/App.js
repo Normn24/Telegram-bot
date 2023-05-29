@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
+import OrderSummary from './Components/OrderSummary/OrderSummary';
 
 const { getData } = require("./db/db")
 const foods = getData();
@@ -10,6 +11,8 @@ const tele = window.Telegram.WebApp
 
 function App() {
   const [cartItems, setCartItems] = useState([])
+  const [showOrderSummary, setShowOrderSummary] = useState(false);
+
 
   useEffect(() => {
     tele.ready();
@@ -40,11 +43,15 @@ function App() {
     }
   }
 
+  const onEditOrder = () => {
+    setShowOrderSummary(false);
+  };
+
   if (cartItems.length === 0) {
     tele.MainButton.hide();
-    tele.MainButton.text = "VIEW ORDER ;)";
   } else {
     tele.MainButton.show()
+    tele.MainButton.text = "VIEW ORDER ;)";
   }
 
   // const onCheckout = () => {
@@ -54,13 +61,25 @@ function App() {
 
   return (
     <>
-      <h1 className='heading'>Order foods</h1>
+      {/* <h1 className='heading'>Order foods</h1>
       <Cart cartItems={cartItems} />
       <div className='cards__container'>
         {foods.map(food => {
           return <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />;
         })}
-      </div>
+      </div> */}
+      {showOrderSummary ? (
+        <OrderSummary cartItems={cartItems} onEdit={onEditOrder} />
+      ) : (
+        <>
+          <Cart cartItems={cartItems} />
+          <div className="cards__container">
+            {foods.map((food) => (
+              <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
+            ))}
+          </div>
+        </>
+      )}
     </>
   )
 }
