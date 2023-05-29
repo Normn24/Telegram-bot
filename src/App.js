@@ -51,6 +51,7 @@ function App() {
     tele.MainButton.text = "VIEW ORDER ;)";
   }
 
+  // eslint-disable-next-line no-unused-vars
   const handleMainButtonClick = () => {
     navigate('/order'); // Navigate to the /order route when MainButton is clicked
   };
