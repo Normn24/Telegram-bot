@@ -1,22 +1,21 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
-import OrderSummary from './Components/OrderSummary/OrderSummary';
 
 const { getData } = require("./db/db")
 const foods = getData();
 
-const tele = window.Telegram.WebApp
+const tele = window.Telegram.WebApp;
 
 function App() {
-  const [cartItems, setCartItems] = useState([])
-  const [showOrderSummary, setShowOrderSummary] = useState(false);
-
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     tele.ready();
-  })
+  });
 
   const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
@@ -34,55 +33,90 @@ function App() {
   const onRemove = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
     if (exist.quantity === 1) {
-      setCartItems(cartItems.filter((x) => x.id !== food.id))
+      setCartItems(cartItems.filter((x) => x.id !== food.id));
     } else {
       setCartItems(
         cartItems.map((x) =>
           x.id === food.id ? { ...exist, quantity: exist.quantity - 1 } : x
-        ))
+        )
+      );
     }
-  }
-
-  const onEditOrder = () => {
-    setShowOrderSummary(false);
   };
 
   if (cartItems.length === 0) {
     tele.MainButton.hide();
   } else {
-    tele.MainButton.show()
+    tele.MainButton.show();
     tele.MainButton.text = "VIEW ORDER ;)";
   }
 
-  // const onCheckout = () => {
-  // tele.MainButton.show();
-  //   tele.MainButton.text = "Pay ;)";
-  // }
+  return (
+    <Router>
+      <Route exact path="/">
+        <HomePage cartItems={cartItems} />
+      </Route>
+      <Route path="/order">
+        <OrderPage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />
+      </Route>
+    </Router>
+  );
+}
+
+function HomePage({ cartItems }) {
+  const [setCartItems] = useState([]);
+
+  const onAdd = (food) => {
+    const exist = cartItems.find((x) => x.id === food.id);
+    if (exist) {
+      setCartItems(
+        cartItems.map((x) =>
+          x.id === food.id ? { ...exist, quantity: exist.quantity + 1 } : x
+        )
+      );
+    } else {
+      setCartItems([...cartItems, { ...food, quantity: 1 }]);
+    }
+  };
+
+  const onRemove = (food) => {
+    const exist = cartItems.find((x) => x.id === food.id);
+    if (exist.quantity === 1) {
+      setCartItems(cartItems.filter((x) => x.id !== food.id));
+    } else {
+      setCartItems(
+        cartItems.map((x) =>
+          x.id === food.id ? { ...exist, quantity: exist.quantity - 1 } : x
+        )
+      );
+    }
+  };
+  return (
+    <>
+      <h1 className='heading'>Order foods</h1>
+      <Cart cartItems={cartItems} />
+      <div className='cards__container'>
+        {foods.map((food) => (
+          <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
+        ))}
+      </div>
+    </>
+  );
+}
+
+function OrderPage({ cartItems, onAdd, onRemove }) {
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   return (
     <>
-      {/* <h1 className='heading'>Order foods</h1>
+      <h1>Order Summary</h1>
       <Cart cartItems={cartItems} />
-      <div className='cards__container'>
-        {foods.map(food => {
-          return <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />;
-        })}
-      </div> */}
-      {showOrderSummary ? (
-        <OrderSummary cartItems={cartItems} onEdit={onEditOrder} />
-      ) : (
-        <>
-          <Cart cartItems={cartItems} />
-          <div className="cards__container">
-            {foods.map((food) => (
-              <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
-            ))}
-          </div>
-        </>
-      )}
+      <h2>Total Price: ${totalPrice}</h2>
+      <Link to="/">Edit Order</Link>
     </>
-  )
+  );
 }
 
 export default App;
-
