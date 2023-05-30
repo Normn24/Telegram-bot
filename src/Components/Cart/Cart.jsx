@@ -2,19 +2,23 @@ import React from "react";
 import "./Cart.css";
 // import Button from "../Button/Button";
 
-function Cart({ cartItems, onCheckout }) {
+function Cart({ cartItems, food }) {
   const totalPrice = cartItems.reduce((a, c) => a + c.price * c.quantity, 0);
+  // eslint-disable-next-line no-unused-vars
+  const { title, Image, price, id } = food;
+
   return (
     <div className="cart__container">
       {cartItems.length === 0
         ? "No items in cart "
         : `Total Price: ${totalPrice.toFixed(2)}`}
-      {/* <Button
-        title={`${cartItems.length === 0 ? "Order!" : "Checkout"} `}
-        type={"checkout"}
-        disable={cartItems.length === 0 ? true : false}
-        onClick={onCheckout}
-      /> */}
+
+      <div className="image__container">
+        <img src={Image} alt={title} />
+      </div>
+      <h4 className="card__title">
+        {title} • <span className="card__price">${price}</span>
+      </h4>
     </div>
   );
 }
