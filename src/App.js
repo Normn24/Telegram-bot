@@ -53,7 +53,7 @@ function App() {
         window.location.href = '/order';
       });
     }
-  }, [cartItems]);
+  });
 
   return (
     <Router>
