@@ -98,14 +98,14 @@ function OrderPage({ cartItems }) {
 
   return (
     <>
-      <h2>Order Summary</h2>
-      <ul>
-        {cartItems.map((food) => (
-          <li key={food.id}>
-            <img src={food.Image} alt={food.title} />{food.title} x {food.quantity}
-          </li>
-        ))}
-      </ul>
+      <h1 className='heading'>Order Summary</h1>
+
+      {cartItems.map((food) => (
+        <div key={food.id}>
+          <img src={food.Image} alt={food.title} />{food.title} x {food.quantity}
+        </div>
+      ))}
+
       <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
       <Link to="/">Edit Order</Link>
     </>
