@@ -59,7 +59,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
-        <Route path="/order" element={<OrderPage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
+        <Route path="/order" element={<OrderPage cartItems={cartItems} />} />
       </Routes>
     </Router>
   );
@@ -79,7 +79,7 @@ function HomePage({ cartItems, onAdd, onRemove }) {
   );
 }
 
-function OrderPage({ cartItems, onAdd, onRemove }) {
+function OrderPage({ cartItems }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
