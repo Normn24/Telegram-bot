@@ -50,7 +50,7 @@ function App() {
         text: 'VIEW ORDER ;)',
         is_visible: true
       }).onClick(() => {
-        window.location.href = '/';
+        window.location.href = '/home';
       });
     }
   });
@@ -58,8 +58,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
-        <Route path="/" element={<OrderPage cartItems={cartItems} />} />
+        <Route path="/" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
+        <Route path="/home" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
+        <Route path="/order" element={<OrderPage cartItems={cartItems} />} />
       </Routes>
     </Router>
   );
