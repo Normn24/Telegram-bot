@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
-import { createBrowserHistory as useHistory } from 'history';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -12,7 +11,6 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
-  const history = useHistory();
 
   useEffect(() => {
     tele.ready();
@@ -48,14 +46,14 @@ function App() {
     if (cartItems.length === 0) {
       tele.MainButton.hide();
     } else {
-      tele.MainButton.show();
-      tele.MainButton.text = "VIEW ORDER ;)";
+      tele.WebApp.MainButton.setParams({
+        text: 'VIEW ORDER ;)',
+        is_visible: true
+      }).onClick(() => {
+        window.location.href = '/order';
+      });
     }
   }, [cartItems]);
-
-  const handleMainButtonClick = () => {
-    history.push('/order');
-  };
 
   return (
     <Router>
@@ -63,7 +61,6 @@ function App() {
         <Route path="/" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
         <Route path="/order" element={<OrderPage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
       </Routes>
-      <TeleMainButton onClick={handleMainButtonClick} />
     </Router>
   );
 }
@@ -96,17 +93,6 @@ function OrderPage({ cartItems, onAdd, onRemove }) {
       <Link to="/">Edit Order</Link>
     </>
   );
-}
-
-function TeleMainButton({ onClick }) {
-  useEffect(() => {
-    tele.MainButton.onClick = onClick;
-    return () => {
-      tele.MainButton.onClick = null;
-    };
-  }, [onClick]);
-
-  return null;
 }
 
 export default App;
