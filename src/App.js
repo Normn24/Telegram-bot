@@ -59,7 +59,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
-        <Route path="/order" element={<OrderPage cartItems={cartItems} />} />
+        <Route path="/" element={<OrderPage cartItems={cartItems} />} />
       </Routes>
     </Router>
   );
