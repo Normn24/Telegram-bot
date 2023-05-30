@@ -46,7 +46,7 @@ function App() {
     tele.MainButton.hide();
   } else {
     tele.MainButton.show();
-    tele.MainButton.text('VIEW ORDER ;)')
+
   }
 
   return (
