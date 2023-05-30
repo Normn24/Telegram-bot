@@ -3,12 +3,39 @@ body{
   color: #fff;
 }
 
+.heading{
+  text-align: center;
+}
+
 .cards__container{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.heading{
+.cart__container{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.cart__title{
+  font-weight: 400;
   text-align: center;
+  margin: 10px 0px;
+}
+
+.cart__title .cart__price{
+  font-weight: bold;
+  font-size: small  ;
+}
+
+.img__container{
+  width: 85px;
+  height: 85px;
+  margin: 0 auto;
+}
+
+.img__container img{
+  width: 100%;
+  object-fit: cover;
 }

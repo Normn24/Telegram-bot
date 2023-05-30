@@ -101,8 +101,13 @@ function OrderPage({ cartItems }) {
       <h1 className='heading'>Order Summary</h1>
 
       {cartItems.map((food) => (
-        <div key={food.id}>
-          <img src={food.Image} alt={food.title} />{food.title} x {food.quantity}
+        <div className='carts__container' key={food.id}>
+          <div className='img__container'>
+            <img src={food.Image} alt={food.title} />
+          </div>
+          <div className='title__container'>
+            {food.title} x {food.quantity} <span className="cart__price">${food.price}</span>
+          </div>
         </div>
       ))}
 
