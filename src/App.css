@@ -13,29 +13,37 @@ body{
   justify-content: center;
 }
 
-.cart__container{
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.cart__title{
-  font-weight: 400;
-  text-align: center;
-  margin: 10px 0px;
-}
-
-.cart__title .cart__price{
-  font-weight: bold;
-  font-size: small  ;
-}
-
-.img__container{
-  width: 85px;
-  height: 85px;
-  margin: 0 auto;
-}
-
-.img__container img{
+.table-container {
   width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  border-bottom: 1px solid #000;
+}
+
+.img__container {
+  width: 50px;
+  height: 50px;
   object-fit: cover;
+  margin-right: 10px;
+}
+
+.cart__title {
+  display: flex;
+  align-items: center;
+}
+
+.cart__price {
+  margin-left: auto;
 }

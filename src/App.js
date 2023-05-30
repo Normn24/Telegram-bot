@@ -98,19 +98,26 @@ function OrderPage({ cartItems }) {
 
   return (
     <>
-      <h1 className='heading'>Order Summary</h1>
+      <div className="table-container">
+        <h1 className="heading">Order Summary</h1>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+          {cartItems.map((food) => (
+            <div className='cart__container' key={food.id}>
 
-      {cartItems.map((food) => (
-        <div className='carts__container' key={food.id}>
-          <div className='img__container'>
-            <img src={food.Image} alt={food.title} />
-          </div>
-          <div className='title__container'>
-            {food.title} x {food.quantity} <span className="cart__price">${food.price}</span>
-          </div>
-        </div>
-      ))}
+              <img className='img__container' src={food.Image} alt={food.title} />
 
+              <div className='cart__title'>
+                {food.title} x {food.quantity} <span className="cart__price">${food.price}</span>
+              </div>
+            </div>
+          ))}
+        </table>
+      </div>
       <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
       <Link to="/">Edit Order</Link>
     </>
