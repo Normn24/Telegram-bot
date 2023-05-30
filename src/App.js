@@ -46,6 +46,7 @@ function App() {
     tele.MainButton.hide();
   } else {
     tele.MainButton.show();
+    tele.MainButton.text('VIEW ORDER ;)')
   }
 
   return (
@@ -54,16 +55,11 @@ function App() {
         <Route
           path="/"
           element={
-            <HomePage
-              cartItems={cartItems}
-              onAdd={onAdd}
-              onRemove={onRemove}
-              tele={tele}
-            />
+            <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
           }
         />
         <Route
-          path="/order"
+          path="/"
           element={<OrderPage cartItems={cartItems} tele={tele} />}
         />
       </Routes>
@@ -102,9 +98,15 @@ function OrderPage({ cartItems, tele }) {
 
   return (
     <>
-      <h1>Order Summary</h1>
-      <Cart cartItems={cartItems} />
-      <h2>Total Price: ${totalPrice}</h2>
+      <h2>Order Summary</h2>
+      <ul>
+        {cartItems.map((item) => (
+          <li key={item.id}>
+            {item.title} x {item.quantity}
+          </li>
+        ))}
+      </ul>
+      <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
       <Link to="/">Edit Order</Link>
     </>
   );
