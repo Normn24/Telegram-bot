@@ -42,21 +42,19 @@ body{
   width: 100%;
 }
 
-.cart__title span {
-  margin-left: auto;
-}
-
 .cart__quantity {
   font-weight: bold;
   color: orange;
   margin-right: 220px;
 }
 
-.total-price {
+.cart__price {
   font-weight: bold;
+  text-align: left;
   margin-top: 20px;
+  margin-left: auto;
 }
 
-.edit-order {
+.cart__edit {
   text-align: left;
 }

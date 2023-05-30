@@ -100,7 +100,7 @@ function OrderPage({ cartItems }) {
     <>
       <div className="carts__container">
         <h1 className="cart__heading">Your order</h1>
-        <Link to="/" className="edit-order">Edit Order</Link>
+        <Link to="/" className="cart__edit">Edit</Link>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
             <img className="img__container" src={food.Image} alt={food.title} />
