@@ -40,21 +40,23 @@ body{
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  font-weight: bold;
 }
 
 .cart__quantity {
   font-weight: bold;
   color: orange;
-  margin-right: 220px;
+  margin-left: 4px;
 }
 
 .cart__price {
   font-weight: bold;
   text-align: left;
-  margin-top: 20px;
   margin-left: auto;
 }
 
 .cart__edit {
-  text-align: left;
+  text-align: right;
+  text-decoration-line: none;
+  color: #fff;
 }
