@@ -104,8 +104,8 @@ function OrderPage({ cartItems }) {
           <div className="order__container" key={food.id}>
             <img className="img__container" src={food.Image} alt={food.title} />
             <div className="cart__title">
-              {food.title} x{" "}
-              <span className="bold-quantity">{food.quantity}</span>{" "}
+              {food.title}
+              <span className="cart__quantity">{food.quantity}x</span>{" "}
               <span className="cart__price">${food.price}</span>
             </div>
           </div>

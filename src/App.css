@@ -14,7 +14,7 @@ body{
 }
 
 .carts__container {
-  width: 100%;
+  margin: 12px;
 }
 
 .cart__heading {
@@ -46,12 +46,14 @@ body{
   margin-left: auto;
 }
 
-.bold-quantity {
+.cart__quantity {
   font-weight: bold;
   color: orange;
+  margin-right: 220px;
 }
 
 .total-price {
+  font-weight: bold;
   margin-top: 20px;
 }
 
