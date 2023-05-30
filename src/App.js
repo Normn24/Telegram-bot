@@ -42,6 +42,12 @@ function App() {
     }
   };
 
+  if (cartItems.length === 0) {
+    tele.MainButton.hide();
+  } else {
+    tele.MainButton.show();
+  }
+
   return (
     <Router>
       <Routes>
@@ -69,16 +75,10 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (cartItems.length === 0) {
-      tele.MainButton.hide();
-    } else {
-      tele.MainButton.setParams({
-        text: 'VIEW ORDER ;)',
-        is_visible: true
-      }).onClick(() => {
-        navigate('/order');
-      });
-    }
+    tele.MainButton.onClick(() => {
+      navigate('/order');
+    });
+
   });
 
   return (
