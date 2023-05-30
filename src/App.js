@@ -100,6 +100,7 @@ function OrderPage({ cartItems }) {
     <>
       <div className="carts__container">
         <h1 className="cart__heading">Your order</h1>
+        <Link to="/" className="edit-order">Edit Order</Link>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
             <img className="img__container" src={food.Image} alt={food.title} />
@@ -110,9 +111,8 @@ function OrderPage({ cartItems }) {
             </div>
           </div>
         ))}
+        <h3 className="total-price">Total Price: ${totalPrice.toFixed(2)}</h3>
       </div>
-      <h3 className="total-price">Total Price: ${totalPrice.toFixed(2)}</h3>
-      <Link to="/" className="edit-order">Edit Order</Link>
 
     </>
   );
