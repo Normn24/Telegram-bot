@@ -102,7 +102,7 @@ function OrderPage({ cartItems, tele }) {
       <ul>
         {cartItems.map((food) => (
           <li key={food.id}>
-            {food.title} x {food.quantity}
+            {food.Image}{food.title} x {food.quantity}
           </li>
         ))}
       </ul>
