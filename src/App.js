@@ -99,7 +99,7 @@ function OrderPage({ cartItems, tele }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    tele.MainButton.text = `${totalPrice.toFixed(2)}`;
+    tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;
     tele.MainButton.onClick(() => {
       navigate('');
     });
@@ -123,7 +123,6 @@ function OrderPage({ cartItems, tele }) {
             </div>
           </div>
         ))}
-        <h3 className="total-price">Total Price: ${totalPrice.toFixed(2)}</h3>
       </div>
 
     </>
