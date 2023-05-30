@@ -74,13 +74,12 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
     tele.MainButton.onClick(() => {
       navigate('/order');
     });
-
   });
 
   return (
     <>
       <h1 className='heading'>Order foods</h1>
-      <Cart cartItems={cartItems} />
+      {/* <Cart cartItems={cartItems} /> */}
       <div className='cards__container'>
         {foods.map((food) => (
           <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
@@ -98,14 +97,12 @@ function OrderPage({ cartItems }) {
 
   return (
     <>
-      <h2>Order Summary</h2>
-      <ul>
-        {cartItems.map((food) => (
-          <li key={food.id}>
-            <img src={food.Image} alt={food.title} />{food.title} x {food.quantity}
-          </li>
-        ))}
-      </ul>
+      <h1 className='heading'>Order Summary</h1>
+
+      {cartItems.map((food) => (
+        <Cart food={food} key={food.id} />
+      ))}
+
       <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
       <Link to="/">Edit Order</Link>
     </>
