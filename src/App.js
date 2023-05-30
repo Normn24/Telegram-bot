@@ -59,7 +59,7 @@ function App() {
           }
         />
         <Route
-          path="/"
+          path="/order"
           element={<OrderPage cartItems={cartItems} tele={tele} />}
         />
       </Routes>
@@ -100,9 +100,9 @@ function OrderPage({ cartItems, tele }) {
     <>
       <h2>Order Summary</h2>
       <ul>
-        {cartItems.map((item) => (
-          <li key={item.id}>
-            {item.title} x {item.quantity}
+        {cartItems.map((food) => (
+          <li key={food.id}>
+            {food.title} x {food.quantity}
           </li>
         ))}
       </ul>
