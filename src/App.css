@@ -18,8 +18,7 @@ body{
 }
 
 .cart__heading {
-  text-align: left;
-  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 .order__container {
@@ -56,7 +55,6 @@ body{
 }
 
 .cart__edit {
-  text-align: right;
   text-decoration-line: none;
   color: #fff;
 }
@@ -64,4 +62,5 @@ body{
 .cart__header{
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }

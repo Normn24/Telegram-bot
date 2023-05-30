@@ -46,7 +46,7 @@ function App() {
     tele.MainButton.hide();
   } else {
     tele.MainButton.show();
-
+    tele.MainButton.text = "VIEW ORDER ;)";
   }
 
   return (
@@ -90,17 +90,27 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
   );
 }
 
-function OrderPage({ cartItems }) {
+function OrderPage({ cartItems, tele }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    tele.MainButton.text = `${totalPrice.toFixed(2)}`;
+    tele.MainButton.onClick(() => {
+      navigate('');
+    });
+
+  });
+
   return (
     <>
       <div className="carts__container">
         <div className="cart__header">
-          <h1 className="cart__heading">Your order</h1>
+          <h3 className="cart__heading">Your order</h3>
           <Link to="/" className="cart__edit">Edit</Link>
         </div>
         {cartItems.map((food) => (
