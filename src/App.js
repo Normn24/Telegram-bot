@@ -50,7 +50,7 @@ function App() {
         text: 'VIEW ORDER ;)',
         is_visible: true
       }).onClick(() => {
-        window.location.href = '/order';
+        window.location.href = '/';
       });
     }
   });
