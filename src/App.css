@@ -60,3 +60,8 @@ body{
   text-decoration-line: none;
   color: #fff;
 }
+
+.cart__header{
+  display: flex;
+  justify-content: space-between;
+}
