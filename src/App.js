@@ -101,9 +101,9 @@ function OrderPage({ cartItems, tele }) {
       <h2>Order Summary</h2>
       <ul>
         {cartItems.map((food) => (
-          // <li key={food.id}>
-          <Cart food={food} key={food.id} title={food.title} quantity={food.quantity} />
-          /* </li> */
+          <li key={food.id}>
+            {food.image}{food.title} x {food.quantity}
+          </li>
         ))}
       </ul>
       <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
