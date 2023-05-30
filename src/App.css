@@ -7,25 +7,21 @@ body{
   text-align: center;
 }
 
+.cart__heading{
+  text-align: left;
+  text-transform: uppercase;
+}
+
 .cards__container{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.table-container {
-  width: 100%;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 8px;
-  text-align: left;
+.carts__container{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 12px;
 }
 
 th {
