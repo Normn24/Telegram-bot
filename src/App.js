@@ -90,7 +90,7 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
   );
 }
 
-function OrderPage({ cartItems, tele }) {
+function OrderPage({ cartItems }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -102,7 +102,7 @@ function OrderPage({ cartItems, tele }) {
       <ul>
         {cartItems.map((food) => (
           <li key={food.id}>
-            {food.image}{food.title} x {food.quantity}
+            <img src={food.Image} alt={food.title} />{food.title} x {food.quantity}
           </li>
         ))}
       </ul>
