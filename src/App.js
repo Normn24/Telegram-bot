@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -42,6 +42,32 @@ function App() {
     }
   };
 
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              tele={tele}
+            />
+          }
+        />
+        <Route
+          path="/order"
+          element={<OrderPage cartItems={cartItems} tele={tele} />}
+        />
+      </Routes>
+    </Router>
+  );
+}
+
+function HomePage({ cartItems, onAdd, onRemove, tele }) {
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (cartItems.length === 0) {
       tele.MainButton.hide();
@@ -50,23 +76,11 @@ function App() {
         text: 'VIEW ORDER ;)',
         is_visible: true
       }).onClick(() => {
-        window.location.href = '/home';
+        navigate('/order');
       });
     }
   });
 
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
-        <Route path="/home" element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
-        <Route path="/order" element={<OrderPage cartItems={cartItems} />} />
-      </Routes>
-    </Router>
-  );
-}
-
-function HomePage({ cartItems, onAdd, onRemove }) {
   return (
     <>
       <h1 className='heading'>Order foods</h1>
@@ -80,7 +94,7 @@ function HomePage({ cartItems, onAdd, onRemove }) {
   );
 }
 
-function OrderPage({ cartItems }) {
+function OrderPage({ cartItems, tele }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
