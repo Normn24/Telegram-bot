@@ -101,18 +101,19 @@ function OrderPage({ cartItems }) {
       <div className="carts__container">
         <h1 className="cart__heading">Your order</h1>
         {cartItems.map((food) => (
-          <div className='cart__container' key={food.id}>
-
-            <img className='img__container' src={food.Image} alt={food.title} />
-
-            <div className='cart__title'>
-              {food.title} x {food.quantity} <span className="cart__price">${food.price}</span>
+          <div className="order__container" key={food.id}>
+            <img className="img__container" src={food.Image} alt={food.title} />
+            <div className="cart__title">
+              {food.title} x{" "}
+              <span className="bold-quantity">{food.quantity}</span>{" "}
+              <span className="cart__price">${food.price}</span>
             </div>
           </div>
         ))}
       </div>
-      <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
-      <Link to="/">Edit Order</Link>
+      <h3 className="total-price">Total Price: ${totalPrice.toFixed(2)}</h3>
+      <Link to="/" className="edit-order">Edit Order</Link>
+
     </>
   );
 }
