@@ -46,7 +46,7 @@ function App() {
     if (cartItems.length === 0) {
       tele.MainButton.hide();
     } else {
-      tele.WebApp.MainButton.setParams({
+      tele.MainButton.setParams({
         text: 'VIEW ORDER ;)',
         is_visible: true
       }).onClick(() => {
