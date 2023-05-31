@@ -1,5 +1,5 @@
 body{
-  background-color: #0e0f13;
+  background-color: #1B1D24;
   color: #fff;
 }
 
@@ -15,7 +15,7 @@ body{
 
 .carts__container {
   padding: 12px;
-  background-color: #1B1D24;
+  box-shadow: 0px 89px 11px 0px #060532;
 }
 
 .cart__heading {
