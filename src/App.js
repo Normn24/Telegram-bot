@@ -82,7 +82,7 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
           <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
         ))}
         {cartItems.map((food) => (
-          <Card food={food} key={food.id} quantity={food.quantity} onAdd={onAdd} onRemove={onRemove} />
+          <Cart food={food} key={food.id} quantity={food.quantity} onAdd={onAdd} onRemove={onRemove} />
         ))}
       </div>
     </>
