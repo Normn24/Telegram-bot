@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -15,6 +15,11 @@ function App() {
   useEffect(() => {
     tele.ready();
   });
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const cartItemsQuery = searchParams.get('cartItems');
+  const cartItemsFromQuery = cartItemsQuery ? JSON.parse(decodeURIComponent(cartItemsQuery)) : [];
 
   const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
@@ -55,7 +60,8 @@ function App() {
         <Route
           path="/"
           element={
-            <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
+            // <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
+            <HomePage cartItems={cartItemsFromQuery} onAdd={onAdd} onRemove={onRemove} tele={tele} />
           }
         />
         <Route
@@ -95,7 +101,7 @@ function OrderPage({ cartItems, tele }) {
     (total, item) => total + item.price * item.quantity,
     0
   );
-
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -111,7 +117,8 @@ function OrderPage({ cartItems, tele }) {
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit">Edit</Link>
+          <Link to={{ pathname: "/", search: `?cartItems=${encodeURIComponent(JSON.stringify(cartItems))}` }} className="cart__edit">Edit</Link>
+          {/* <Link to="/" className="cart__edit">Edit</Link> */}
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
