@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -10,8 +10,8 @@ const foods = getData();
 const tele = window.Telegram.WebApp;
 
 function App() {
-  const [cartItems, setCartItems] = useState([]);
-
+  const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  const [cartItems, setCartItems] = useState(storedCartItems);
 
   useEffect(() => {
     tele.ready();
@@ -43,6 +43,10 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+
   if (cartItems.length === 0) {
     tele.MainButton.hide();
   } else {
@@ -70,9 +74,7 @@ function App() {
 
 function HomePage({ cartItems, onAdd, onRemove, tele }) {
   const navigate = useNavigate();
-  const location = useLocation();
-  // eslint-disable-next-line no-unused-vars
-  const isOrderPage = location.pathname === '/order';
+
   useEffect(() => {
     tele.MainButton.onClick(() => {
       navigate('/order');
@@ -93,18 +95,17 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
 }
 
 function OrderPage({ cartItems, tele }) {
-  const navigate = useNavigate();
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   useEffect(() => {
-    tele.MainButton.text = `PAY $${getTotalPrice().toFixed(2)}`;
+    tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;
     tele.MainButton.onClick(() => {
-      navigate('/');
+      tele.MainButton.show();
     });
-  });
-
-  function getTotalPrice() {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  }
+  }, [tele.MainButton, totalPrice]);
 
   return (
     <>
