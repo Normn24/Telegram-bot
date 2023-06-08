@@ -60,7 +60,7 @@ function App() {
         />
         <Route
           path="/order"
-          element={<OrderPage cartItems={cartItems} tele={tele} />}
+          element={<OrderPage cartItems={cartItems} onEdit={() => setCartItems([])} tele={tele} />}
         />
       </Routes>
     </Router>
@@ -90,7 +90,7 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
   );
 }
 
-function OrderPage({ cartItems, tele }) {
+function OrderPage({ cartItems, onEdit, tele }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -111,7 +111,9 @@ function OrderPage({ cartItems, tele }) {
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit" >Edit</Link>
+          <Link to="/" className="cart__edit" onClick={onEdit}>
+            Edit
+          </Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
@@ -124,7 +126,6 @@ function OrderPage({ cartItems, tele }) {
           </div>
         ))}
       </div>
-
     </>
   );
 }
