@@ -103,15 +103,16 @@ function OrderPage({ cartItems, tele }) {
     tele.MainButton.onClick(() => {
       navigate('');
     });
-
-  });
+  }, [navigate, tele.MainButton, totalPrice]);
 
   return (
     <>
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit">Edit</Link>
+          <Link to="/" className="cart__edit">
+            Edit
+          </Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
@@ -124,9 +125,7 @@ function OrderPage({ cartItems, tele }) {
           </div>
         ))}
       </div>
-
     </>
   );
 }
-
 export default App;
