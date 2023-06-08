@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -11,6 +11,7 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
+
 
   useEffect(() => {
     tele.ready();
@@ -49,6 +50,10 @@ function App() {
     tele.MainButton.text = "VIEW ORDER ;)";
   }
 
+  function getTotalPrice() {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  }
+
   return (
     <Router>
       <Routes>
@@ -69,12 +74,14 @@ function App() {
 
 function HomePage({ cartItems, onAdd, onRemove, tele }) {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const isOrderPage = location.pathname === '/order';
   useEffect(() => {
     tele.MainButton.onClick(() => {
       navigate('/order');
     });
   });
+
   return (
     <>
       <h1 className='heading'>Order foods</h1>
@@ -89,17 +96,18 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
 }
 
 function OrderPage({ cartItems, tele }) {
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const navigate = useNavigate();
 
   useEffect(() => {
-    tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;
+    tele.MainButton.text = `PAY $${getTotalPrice().toFixed(2)}`;
     tele.MainButton.onClick(() => {
-      tele.MainButton.show();
+      navigate('/');
     });
-  }, [tele.MainButton, totalPrice]);
+  });
+
+  function getTotalPrice() {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  }
 
   return (
     <>
