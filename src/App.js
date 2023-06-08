@@ -18,26 +18,6 @@ function App() {
     tele.ready();
   });
 
-  useEffect(() => {
-    // Збереження даних у локальному сховищі перед закриттям програми
-    const handleBeforeUnload = () => {
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // Очистка даних при наступному запуску програми
-    const savedCartItems = localStorage.getItem('cartItems');
-    if (savedCartItems) {
-      setCartItems(JSON.parse(savedCartItems));
-      localStorage.removeItem('cartItems');
-    }
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [cartItems]);
-
   const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
     if (exist) {
