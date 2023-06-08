@@ -65,7 +65,7 @@ function App() {
         />
         <Route
           path="/order"
-          element={<OrderPage cartItems={cartItems} onEdit={() => setCartItems([])} tele={tele} />}
+          element={<OrderPage cartItems={cartItems} tele={tele} />}
         />
       </Routes>
     </Router>
@@ -94,7 +94,7 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
   );
 }
 
-function OrderPage({ cartItems, onEdit, tele }) {
+function OrderPage({ cartItems, tele }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -109,12 +109,16 @@ function OrderPage({ cartItems, onEdit, tele }) {
     });
   });
 
+  const handleEdit = () => {
+    navigate('/');
+  };
+
   return (
     <>
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit" onClick={onEdit}>
+          <Link to="/" className="cart__edit" onClick={handleEdit}>
             Edit
           </Link>
         </div>
