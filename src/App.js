@@ -11,8 +11,6 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
-  const [editMode, setEditMode] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
     tele.ready();
@@ -57,16 +55,7 @@ function App() {
         <Route
           path="/"
           element={
-            <HomePage
-              cartItems={cartItems}
-              onAdd={onAdd}
-              onRemove={onRemove}
-              editMode={editMode}
-              setEditMode={setEditMode}
-              tele={tele}
-              selectedItems={selectedItems}
-              setSelectedItems={setSelectedItems}
-            />
+            <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
           }
         />
         <Route
@@ -78,30 +67,21 @@ function App() {
   );
 }
 
-function HomePage({
-  cartItems,
-  onAdd,
-  onRemove,
-  editMode,
-  setEditMode,
-  tele,
-  selectedItems,
-  setSelectedItems,
-}) {
+function HomePage({ cartItems, onAdd, onRemove, tele }) {
   const navigate = useNavigate();
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
-      setSelectedItems(cartItems);
       navigate('/order');
     });
+
   });
 
   return (
     <>
-      <h1 className="heading">Order foods</h1>
-      <Cart cartItems={cartItems} editMode={editMode} setEditMode={setEditMode} />
-      <div className="cards__container">
+      <h1 className='heading'>Order foods</h1>
+      <Cart cartItems={cartItems} />
+      <div className='cards__container'>
         {foods.map((food) => (
           <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
         ))}
@@ -110,7 +90,7 @@ function HomePage({
   );
 }
 
-function OrderPage({ cartItems, tele, selectedItems, setSelectedItems }) {
+function OrderPage({ cartItems, tele }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -123,6 +103,7 @@ function OrderPage({ cartItems, tele, selectedItems, setSelectedItems }) {
     tele.MainButton.onClick(() => {
       navigate('');
     });
+
   });
 
   return (
@@ -130,18 +111,10 @@ function OrderPage({ cartItems, tele, selectedItems, setSelectedItems }) {
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link
-            to="/"
-            className="cart__edit"
-            onClick={() => {
-              navigate('/');
-              setSelectedItems([]);
-            }}
-          >
-            Edit
-          </Link>
+          <Link to="/" className="cart__edit" onClick={() => navigate('/')}>Edit</Link>
+
         </div>
-        {selectedItems.map((food) => (
+        {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
             <img className="img__container" src={food.Image} alt={food.title} />
             <div className="cart__title">
@@ -152,6 +125,7 @@ function OrderPage({ cartItems, tele, selectedItems, setSelectedItems }) {
           </div>
         ))}
       </div>
+
     </>
   );
 }
