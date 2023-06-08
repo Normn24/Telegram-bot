@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -11,15 +11,11 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     tele.ready();
   });
-
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const cartItemsQuery = searchParams.get('cartItems');
-  const cartItemsFromQuery = cartItemsQuery ? JSON.parse(decodeURIComponent(cartItemsQuery)) : [];
 
   const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
@@ -60,34 +56,36 @@ function App() {
         <Route
           path="/"
           element={
-            // <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
-            <HomePage cartItems={cartItemsFromQuery} onAdd={onAdd} onRemove={onRemove} tele={tele} />
+            <HomePage
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              editMode={editMode}
+              setEditMode={setEditMode}
+              tele={tele}
+            />
           }
         />
-        <Route
-          path="/order"
-          element={<OrderPage cartItems={cartItems} tele={tele} />}
-        />
+        <Route path="/order" element={<OrderPage cartItems={cartItems} tele={tele} />} />
       </Routes>
     </Router>
   );
 }
 
-function HomePage({ cartItems, onAdd, onRemove, tele }) {
+function HomePage({ cartItems, onAdd, onRemove, editMode, setEditMode, tele }) {
   const navigate = useNavigate();
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
       navigate('/order');
     });
-
   });
 
   return (
     <>
-      <h1 className='heading'>Order foods</h1>
-      <Cart cartItems={cartItems} />
-      <div className='cards__container'>
+      <h1 className="heading">Order foods</h1>
+      <Cart cartItems={cartItems} editMode={editMode} setEditMode={setEditMode} />
+      <div className="cards__container">
         {foods.map((food) => (
           <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
         ))}
@@ -101,8 +99,7 @@ function OrderPage({ cartItems, tele }) {
     (total, item) => total + item.price * item.quantity,
     0
   );
-  // eslint-disable-next-line no-unused-vars
-  const location = useLocation();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -110,7 +107,6 @@ function OrderPage({ cartItems, tele }) {
     tele.MainButton.onClick(() => {
       navigate('');
     });
-
   });
 
   return (
@@ -118,8 +114,9 @@ function OrderPage({ cartItems, tele }) {
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to={{ pathname: "/", search: `?cartItems=${encodeURIComponent(JSON.stringify(cartItems))}` }} className="cart__edit">Edit</Link>
-          {/* <Link to="/" className="cart__edit">Edit</Link> */}
+          <Link to="/" className="cart__edit" onClick={() => navigate('/')}>
+            Edit
+          </Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
@@ -132,7 +129,6 @@ function OrderPage({ cartItems, tele }) {
           </div>
         ))}
       </div>
-
     </>
   );
 }
