@@ -11,6 +11,7 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
+  const [previousView, setPreviousView] = useState(null);
 
   useEffect(() => {
     tele.ready();
@@ -42,35 +43,39 @@ function App() {
     }
   };
 
-  if (cartItems.length === 0) {
-    tele.MainButton.hide();
-  } else {
-    tele.MainButton.show();
-    tele.MainButton.text = "VIEW ORDER ;)";
-  }
-
   return (
     <Router>
       <Routes>
         <Route
           path="/"
           element={
-            <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
+            <HomePage
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              tele={tele}
+              setPreviousView={setPreviousView}
+            />
           }
         />
         <Route
           path="/order"
-          element={<OrderPage cartItems={cartItems} tele={tele} />}
+          element={
+            <OrderPage
+              cartItems={cartItems}
+              previousView={previousView}
+              tele={tele}
+              setPreviousView={setPreviousView}
+            />
+          }
         />
       </Routes>
     </Router>
   );
 }
 
-function HomePage({ cartItems, onAdd, onRemove, tele }) {
+function HomePage({ cartItems, onAdd, onRemove, tele, setPreviousView }) {
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
-  const location = useLocation();
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
@@ -84,34 +89,44 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
       <Cart cartItems={cartItems} />
       <div className='cards__container'>
         {foods.map((food) => (
-          <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
+          <Card
+            food={food}
+            key={food.id}
+            onAdd={onAdd}
+            onRemove={onRemove}
+            cartItems={cartItems}
+          />
         ))}
       </div>
     </>
   );
 }
 
-function OrderPage({ cartItems, tele }) {
+function OrderPage({ cartItems, previousView, tele, setPreviousView }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    setPreviousView(location.pathname);
     tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;
     tele.MainButton.onClick(() => {
-      navigate('');
+      navigate(previousView);
     });
-  });
+  }, [navigate, previousView, tele.MainButton, totalPrice, setPreviousView, location]);
 
   return (
     <>
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit">Edit</Link>
+          <Link to={previousView} className="cart__edit">
+            Edit
+          </Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
