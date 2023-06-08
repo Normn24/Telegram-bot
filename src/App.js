@@ -48,6 +48,7 @@ function App() {
   useEffect(() => {
     setOnAdd(() => handleAdd);
     setOnRemove(() => handleRemove);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
