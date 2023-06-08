@@ -101,6 +101,7 @@ function OrderPage({ cartItems, tele }) {
     (total, item) => total + item.price * item.quantity,
     0
   );
+  // eslint-disable-next-line no-unused-vars
   const location = useLocation();
   const navigate = useNavigate();
 
