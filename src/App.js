@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -68,13 +68,10 @@ function App() {
 }
 
 function HomePage({ cartItems, onAdd, onRemove, tele }) {
-  const navigate = useNavigate();
-
   useEffect(() => {
     tele.MainButton.onClick(() => {
-      navigate('/order');
+      tele.MainButton.hide();
     });
-
   });
 
   return (
@@ -96,23 +93,19 @@ function OrderPage({ cartItems, tele }) {
     0
   );
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;
     tele.MainButton.onClick(() => {
-      navigate('');
+      tele.MainButton.show();
     });
-  }, [navigate, tele.MainButton, totalPrice]);
+  }, [tele.MainButton, totalPrice]);
 
   return (
     <>
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit">
-            Edit
-          </Link>
+          <Link to="/" className="cart__edit">Edit</Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
@@ -128,4 +121,5 @@ function OrderPage({ cartItems, tele }) {
     </>
   );
 }
+
 export default App;
