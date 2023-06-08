@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -68,12 +68,13 @@ function App() {
 }
 
 function HomePage({ cartItems, onAdd, onRemove, tele }) {
+  const navigate = useNavigate();
+
   useEffect(() => {
     tele.MainButton.onClick(() => {
-      tele.MainButton.hide();
+      navigate('/order');
     });
   });
-
   return (
     <>
       <h1 className='heading'>Order foods</h1>
