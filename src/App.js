@@ -10,7 +10,8 @@ const foods = getData();
 const tele = window.Telegram.WebApp;
 
 function App() {
-  const [cartItems, setCartItems] = useState([]);
+  const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  const [cartItems, setCartItems] = useState(savedCartItems);
 
   useEffect(() => {
     tele.ready();
@@ -41,6 +42,10 @@ function App() {
       );
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   if (cartItems.length === 0) {
     tele.MainButton.hide();
@@ -74,7 +79,6 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
     tele.MainButton.onClick(() => {
       navigate('/order');
     });
-
   });
 
   return (
@@ -103,7 +107,6 @@ function OrderPage({ cartItems, onEdit, tele }) {
     tele.MainButton.onClick(() => {
       navigate('/');
     });
-
   });
 
   return (
