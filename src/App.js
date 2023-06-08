@@ -10,16 +10,16 @@ const foods = getData();
 const tele = window.Telegram.WebApp;
 
 function App() {
-  const storedData = JSON.parse(localStorage.getItem('cartData')) || { cartItems: [], onAdd: () => { }, onRemove: () => { } };
-  const [cartItems, setCartItems] = useState(storedData.cartItems);
-  const [onAdd, setOnAdd] = useState(storedData.onAdd);
-  const [onRemove, setOnRemove] = useState(storedData.onRemove);
+  const storedState = JSON.parse(localStorage.getItem('mainPageState')) || {
+    cartItems: []
+  };
+  const [cartItems, setCartItems] = useState(storedState.cartItems);
 
   useEffect(() => {
     tele.ready();
   });
 
-  const handleAdd = (food) => {
+  const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
     if (exist) {
       setCartItems(
@@ -32,7 +32,7 @@ function App() {
     }
   };
 
-  const handleRemove = (food) => {
+  const onRemove = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
     if (exist.quantity === 1) {
       setCartItems(cartItems.filter((x) => x.id !== food.id));
@@ -46,14 +46,9 @@ function App() {
   };
 
   useEffect(() => {
-    setOnAdd(() => handleAdd);
-    setOnRemove(() => handleRemove);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('cartData', JSON.stringify({ cartItems, onAdd, onRemove }));
-  }, [cartItems, onAdd, onRemove]);
+    const mainPageState = { cartItems };
+    localStorage.setItem('mainPageState', JSON.stringify(mainPageState));
+  }, [cartItems]);
 
   if (cartItems.length === 0) {
     tele.MainButton.hide();
@@ -68,13 +63,15 @@ function App() {
         <Route
           path="/"
           element={
-            <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
+            <HomePage
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              tele={tele}
+            />
           }
         />
-        <Route
-          path="/order"
-          element={<OrderPage cartItems={cartItems} tele={tele} />}
-        />
+        <Route path="/order" element={<OrderPage cartItems={cartItems} tele={tele} />} />
       </Routes>
     </Router>
   );
@@ -91,9 +88,9 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
 
   return (
     <>
-      <h1 className='heading'>Order foods</h1>
+      <h1 className="heading">Order foods</h1>
       <Cart cartItems={cartItems} />
-      <div className='cards__container'>
+      <div className="cards__container">
         {foods.map((food) => (
           <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
         ))}
@@ -120,11 +117,17 @@ function OrderPage({ cartItems, tele }) {
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit">Edit</Link>
+          <Link to="/" className="cart__edit">
+            Edit
+          </Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
-            <img className="img__container" src={food.Image} alt={food.title} />
+            <img
+              className="img__container"
+              src={food.Image}
+              alt={food.title}
+            />
             <div className="cart__title">
               {food.title}
               <span className="cart__quantity">{food.quantity}x</span>{" "}
