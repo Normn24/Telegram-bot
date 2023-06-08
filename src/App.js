@@ -10,10 +10,7 @@ const foods = getData();
 const tele = window.Telegram.WebApp;
 
 function App() {
-  const storedState = JSON.parse(localStorage.getItem('mainPageState')) || {
-    cartItems: []
-  };
-  const [cartItems, setCartItems] = useState(storedState.cartItems);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     tele.ready();
@@ -45,11 +42,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const mainPageState = { cartItems };
-    localStorage.setItem('mainPageState', JSON.stringify(mainPageState));
-  }, [cartItems]);
-
   if (cartItems.length === 0) {
     tele.MainButton.hide();
   } else {
@@ -62,16 +54,12 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            <HomePage
-              cartItems={cartItems}
-              onAdd={onAdd}
-              onRemove={onRemove}
-              tele={tele}
-            />
-          }
+          element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />}
         />
-        <Route path="/order" element={<OrderPage cartItems={cartItems} tele={tele} />} />
+        <Route
+          path="/order"
+          element={<OrderPage cartItems={cartItems} tele={tele} />}
+        />
       </Routes>
     </Router>
   );
@@ -85,12 +73,11 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
       navigate('/order');
     });
   });
-
   return (
     <>
-      <h1 className="heading">Order foods</h1>
+      <h1 className='heading'>Order foods</h1>
       <Cart cartItems={cartItems} />
-      <div className="cards__container">
+      <div className='cards__container'>
         {foods.map((food) => (
           <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
         ))}
@@ -117,17 +104,11 @@ function OrderPage({ cartItems, tele }) {
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit">
-            Edit
-          </Link>
+          <Link to="/" className="cart__edit">Edit</Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
-            <img
-              className="img__container"
-              src={food.Image}
-              alt={food.title}
-            />
+            <img className="img__container" src={food.Image} alt={food.title} />
             <div className="cart__title">
               {food.title}
               <span className="cart__quantity">{food.quantity}x</span>{" "}
