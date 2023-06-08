@@ -43,6 +43,13 @@ function App() {
     }
   };
 
+  if (cartItems.length === 0) {
+    tele.MainButton.hide();
+  } else {
+    tele.MainButton.show();
+    tele.MainButton.text = "VIEW ORDER ;)";
+  }
+
   return (
     <Router>
       <Routes>
