@@ -10,7 +10,9 @@ const foods = getData();
 const tele = window.Telegram.WebApp;
 
 function App() {
-  const [cartItems, setCartItems] = useState([]);
+  const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+  const [cartItems, setCartItems] = useState(savedCartItems);
 
   useEffect(() => {
     tele.ready();
@@ -70,6 +72,7 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
       navigate('/order');
     });
   });
@@ -80,9 +83,6 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
       <div className='cards__container'>
         {foods.map((food) => (
           <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
-        ))}
-        {cartItems.map((food) => (
-          <Cart food={food} key={food.id} quantity={food.quantity} onAdd={onAdd} onRemove={onRemove} />
         ))}
       </div>
     </>
