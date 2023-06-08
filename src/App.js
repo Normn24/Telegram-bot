@@ -50,10 +50,6 @@ function App() {
     tele.MainButton.text = "VIEW ORDER ;)";
   }
 
-  function getTotalPrice() {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  }
-
   return (
     <Router>
       <Routes>
@@ -75,6 +71,7 @@ function App() {
 function HomePage({ cartItems, onAdd, onRemove, tele }) {
   const navigate = useNavigate();
   const location = useLocation();
+  // eslint-disable-next-line no-unused-vars
   const isOrderPage = location.pathname === '/order';
   useEffect(() => {
     tele.MainButton.onClick(() => {
