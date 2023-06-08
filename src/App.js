@@ -11,7 +11,6 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
-  const [previousView, setPreviousView] = useState(null);
 
   useEffect(() => {
     tele.ready();
@@ -43,11 +42,6 @@ function App() {
     }
   };
 
-  const location = useLocation();
-  useEffect(() => {
-    setPreviousView(location.pathname);
-  }, [location]);
-
   if (cartItems.length === 0) {
     tele.MainButton.hide();
   } else {
@@ -66,7 +60,7 @@ function App() {
         />
         <Route
           path="/order"
-          element={<OrderPage cartItems={cartItems} previousView={previousView} tele={tele} />}
+          element={<OrderPage cartItems={cartItems} tele={tele} />}
         />
       </Routes>
     </Router>
@@ -75,6 +69,8 @@ function App() {
 
 function HomePage({ cartItems, onAdd, onRemove, tele }) {
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
+  const location = useLocation();
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
@@ -95,7 +91,7 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
   );
 }
 
-function OrderPage({ cartItems, previousView, tele }) {
+function OrderPage({ cartItems, tele }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -106,16 +102,16 @@ function OrderPage({ cartItems, previousView, tele }) {
   useEffect(() => {
     tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;
     tele.MainButton.onClick(() => {
-      navigate(previousView);
+      navigate('');
     });
-  }, [navigate, previousView, tele.MainButton.text, totalPrice]);
+  });
 
   return (
     <>
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to={previousView} className="cart__edit">Edit</Link>
+          <Link to="/" className="cart__edit">Edit</Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
