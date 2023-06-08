@@ -10,14 +10,16 @@ const foods = getData();
 const tele = window.Telegram.WebApp;
 
 function App() {
-  const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-  const [cartItems, setCartItems] = useState(storedCartItems);
+  const storedData = JSON.parse(localStorage.getItem('cartData')) || { cartItems: [], onAdd: () => { }, onRemove: () => { } };
+  const [cartItems, setCartItems] = useState(storedData.cartItems);
+  const [onAdd, setOnAdd] = useState(storedData.onAdd);
+  const [onRemove, setOnRemove] = useState(storedData.onRemove);
 
   useEffect(() => {
     tele.ready();
   });
 
-  const onAdd = (food) => {
+  const handleAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
     if (exist) {
       setCartItems(
@@ -30,7 +32,7 @@ function App() {
     }
   };
 
-  const onRemove = (food) => {
+  const handleRemove = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
     if (exist.quantity === 1) {
       setCartItems(cartItems.filter((x) => x.id !== food.id));
@@ -44,8 +46,13 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
+    setOnAdd(() => handleAdd);
+    setOnRemove(() => handleRemove);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cartData', JSON.stringify({ cartItems, onAdd, onRemove }));
+  }, [cartItems, onAdd, onRemove]);
 
   if (cartItems.length === 0) {
     tele.MainButton.hide();
