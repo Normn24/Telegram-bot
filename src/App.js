@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -10,8 +10,7 @@ const foods = getData();
 const tele = window.Telegram.WebApp;
 
 function App() {
-  const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-  const [cartItems, setCartItems] = useState(savedCartItems);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     tele.ready();
@@ -43,10 +42,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
-
   if (cartItems.length === 0) {
     tele.MainButton.hide();
   } else {
@@ -60,12 +55,7 @@ function App() {
         <Route
           path="/"
           element={
-            <HomePage
-              cartItems={cartItems}
-              onAdd={onAdd}
-              onRemove={onRemove}
-              tele={tele}
-            />
+            <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
           }
         />
         <Route
@@ -82,8 +72,9 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
-      navigate('/order');
+      navigate('/order', { state: { cartItems } });
     });
+
   });
 
   return (
@@ -99,7 +90,10 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
   );
 }
 
-function OrderPage({ cartItems, tele }) {
+function OrderPage({ tele }) {
+  const location = useLocation();
+  const cartItems = location.state ? location.state.cartItems : [];
+
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -112,20 +106,15 @@ function OrderPage({ cartItems, tele }) {
     tele.MainButton.onClick(() => {
       navigate('/');
     });
-  });
 
-  const handleEdit = () => {
-    navigate('/', { state: { cartItems } });
-  };
+  });
 
   return (
     <>
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit" onClick={handleEdit}>
-            Edit
-          </Link>
+          <Link to="/" className="cart__edit">Edit</Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
@@ -138,8 +127,8 @@ function OrderPage({ cartItems, tele }) {
           </div>
         ))}
       </div>
+
     </>
   );
 }
-
 export default App;
