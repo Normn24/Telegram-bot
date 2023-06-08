@@ -12,6 +12,7 @@ const tele = window.Telegram.WebApp;
 function App() {
   const [cartItems, setCartItems] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
     tele.ready();
@@ -63,20 +64,35 @@ function App() {
               editMode={editMode}
               setEditMode={setEditMode}
               tele={tele}
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
             />
           }
         />
-        <Route path="/order" element={<OrderPage cartItems={cartItems} tele={tele} />} />
+        <Route
+          path="/order"
+          element={<OrderPage cartItems={cartItems} tele={tele} />}
+        />
       </Routes>
     </Router>
   );
 }
 
-function HomePage({ cartItems, onAdd, onRemove, editMode, setEditMode, tele }) {
+function HomePage({
+  cartItems,
+  onAdd,
+  onRemove,
+  editMode,
+  setEditMode,
+  tele,
+  selectedItems,
+  setSelectedItems,
+}) {
   const navigate = useNavigate();
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
+      setSelectedItems(cartItems);
       navigate('/order');
     });
   });
@@ -94,7 +110,7 @@ function HomePage({ cartItems, onAdd, onRemove, editMode, setEditMode, tele }) {
   );
 }
 
-function OrderPage({ cartItems, tele }) {
+function OrderPage({ cartItems, tele, selectedItems, setSelectedItems }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -114,11 +130,18 @@ function OrderPage({ cartItems, tele }) {
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit" onClick={() => navigate('/')}>
+          <Link
+            to="/"
+            className="cart__edit"
+            onClick={() => {
+              navigate('/');
+              setSelectedItems([]);
+            }}
+          >
             Edit
           </Link>
         </div>
-        {cartItems.map((food) => (
+        {selectedItems.map((food) => (
           <div className="order__container" key={food.id}>
             <img className="img__container" src={food.Image} alt={food.title} />
             <div className="cart__title">
