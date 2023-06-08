@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
@@ -11,6 +11,7 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
+  const [previousView, setPreviousView] = useState(null);
 
   useEffect(() => {
     tele.ready();
@@ -42,6 +43,11 @@ function App() {
     }
   };
 
+  const location = useLocation();
+  useEffect(() => {
+    setPreviousView(location.pathname);
+  }, [location]);
+
   if (cartItems.length === 0) {
     tele.MainButton.hide();
   } else {
@@ -60,7 +66,7 @@ function App() {
         />
         <Route
           path="/order"
-          element={<OrderPage cartItems={cartItems} tele={tele} />}
+          element={<OrderPage cartItems={cartItems} previousView={previousView} tele={tele} />}
         />
       </Routes>
     </Router>
@@ -72,9 +78,8 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
-      navigate('/order', { state: { cartItems } });
+      navigate('/order');
     });
-
   });
 
   return (
@@ -90,10 +95,7 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
   );
 }
 
-function OrderPage({ tele }) {
-  const location = useLocation();
-  const cartItems = location.state ? location.state.cartItems : [];
-
+function OrderPage({ cartItems, previousView, tele }) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -104,17 +106,16 @@ function OrderPage({ tele }) {
   useEffect(() => {
     tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;
     tele.MainButton.onClick(() => {
-      navigate('/');
+      navigate(previousView);
     });
-
-  });
+  }, [navigate, previousView, tele.MainButton.text, totalPrice]);
 
   return (
     <>
       <div className="carts__container">
         <div className="cart__header">
           <h3 className="cart__heading">Your order</h3>
-          <Link to="/" className="cart__edit">Edit</Link>
+          <Link to={previousView} className="cart__edit">Edit</Link>
         </div>
         {cartItems.map((food) => (
           <div className="order__container" key={food.id}>
@@ -127,8 +128,8 @@ function OrderPage({ tele }) {
           </div>
         ))}
       </div>
-
     </>
   );
 }
+
 export default App;
