@@ -60,7 +60,12 @@ function App() {
         <Route
           path="/"
           element={
-            <HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />
+            <HomePage
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              tele={tele}
+            />
           }
         />
         <Route
@@ -110,7 +115,7 @@ function OrderPage({ cartItems, tele }) {
   });
 
   const handleEdit = () => {
-    navigate('/');
+    navigate('/', { state: { cartItems } });
   };
 
   return (
