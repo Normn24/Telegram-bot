@@ -108,7 +108,7 @@ function OrderPage({ cartItems, tele }) {
 
   const onSendData = useCallback(() => {
     const data = {
-      products: cartItems,
+      cartItems: cartItems.map((item) => ({ ...item, title: item.title })),
       totalPrice: totalPrice.toFixed(2),
       queryId,
     }
