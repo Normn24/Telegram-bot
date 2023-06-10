@@ -18,11 +18,11 @@ body{
   flex-wrap: wrap;
   justify-content: center;
   padding-bottom: 50px;
+  height: 100%;
 }
 
 .carts__container {
   padding: 12px;
-  /* box-shadow: 0px 89px 11px 200px #111318; */
 }
 
 .cart__heading {
