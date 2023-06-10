@@ -29,7 +29,7 @@ function Card({ food, onAdd, onRemove }) {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [id]);
+  }, [count, id]);
 
   const handleIncrement = () => {
     setCount(count + 1);
