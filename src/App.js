@@ -10,33 +10,11 @@ const foods = getData();
 const tele = window.Telegram.WebApp;
 
 function App() {
-  const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-  const [cartItems, setCartItems] = useState(savedCartItems);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     tele.ready();
   });
-
-  useEffect(() => {
-    // Збереження даних у локальному сховищі перед закриттям програми
-    const handleBeforeUnload = () => {
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // Очистка даних при наступному запуску програми
-    const savedCartItems = localStorage.getItem('cartItems');
-    if (savedCartItems) {
-      setCartItems(JSON.parse(savedCartItems));
-      localStorage.clear('cartItems');
-    }
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [cartItems]);
 
   const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
@@ -92,7 +70,6 @@ function HomePage({ cartItems, onAdd, onRemove, tele }) {
 
   useEffect(() => {
     tele.MainButton.onClick(() => {
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
       navigate('/order');
     });
   });

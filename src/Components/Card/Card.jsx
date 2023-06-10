@@ -20,17 +20,17 @@ function Card({ food, onAdd, onRemove }) {
     localStorage.setItem(`count_${id}`, count.toString());
   }, [count, id]);
 
-  // useEffect(() => {
-  //   const handleBeforeUnload = () => {
-  //     localStorage.clear(`count_${id}`);
-  //   };
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.clear(`count_${id}`);
+    };
 
-  //   window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleBeforeUnload);
-  //   };
-  // }, [id]);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [id]);
 
   const handleIncrement = () => {
     setCount(count + 1);
