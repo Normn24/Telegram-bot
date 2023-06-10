@@ -9,6 +9,8 @@ body{
 
 .heading{
   text-align: center;
+  margin: 0;
+  padding: 12px 0;
 }
 
 .cards__container{
