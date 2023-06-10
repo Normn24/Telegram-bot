@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import "./Card.css";
 import Button from "../Button/Button";
@@ -8,30 +7,30 @@ function Card({ food, onAdd, onRemove }) {
   // eslint-disable-next-line no-unused-vars
   const { title, Image, price, id } = food;
 
-  // useEffect(() => {
-  //   // Відновлення значення count з локального сховища при монтажі компонента
-  //   const savedCount = localStorage.getItem(`count_${id}`);
-  //   if (savedCount) {
-  //     setCount(parseInt(savedCount));
-  //   }
-  // }, [id]);
+  useEffect(() => {
+    // Відновлення значення count з локального сховища при монтажі компонента
+    const savedCount = localStorage.getItem(`count_${id}`);
+    if (savedCount) {
+      setCount(parseInt(savedCount));
+    }
+  }, [id]);
 
-  // useEffect(() => {
-  //   // Збереження значення count у локальному сховищі при зміні
-  //   localStorage.setItem(`count_${id}`, count.toString());
-  // }, [count, id]);
+  useEffect(() => {
+    // Збереження значення count у локальному сховищі при зміні
+    localStorage.setItem(`count_${id}`, count.toString());
+  }, [count, id]);
 
-  // useEffect(() => {
-  //   const handleBeforeUnload = () => {
-  //     localStorage.clear(`count_${id}`);
-  //   };
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.clear(`count_${id}`);
+    };
 
-  //   window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleBeforeUnload);
-  //   };
-  // }, [id]);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [id]);
 
   const handleIncrement = () => {
     setCount(count + 1);
