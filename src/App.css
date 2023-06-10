@@ -1,3 +1,7 @@
+:root {
+  background-color: #111318;
+}
+
 body{
   background-color: #1B1D24;
   color: #fff;
@@ -16,7 +20,7 @@ body{
 
 .carts__container {
   padding: 12px;
-  box-shadow: 0px 89px 11px 200px #111318;
+  /* box-shadow: 0px 89px 11px 200px #111318; */
 }
 
 .cart__heading {
