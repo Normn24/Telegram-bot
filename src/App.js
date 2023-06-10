@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cart from './Components/Cart/Cart';
@@ -103,12 +103,25 @@ function OrderPage({ cartItems, tele }) {
     0
   );
 
+
+  const queryId = tele.initDataUnsafe?.query_id;
+
+  const onSendData = useCallback(() => {
+    const data = {
+      products: foods.title,
+      totalPrice: totalPrice.toFixed(2),
+      queryId,
+    }
+    tele.sendData(JSON.stringify(data));
+  }, [queryId, tele, totalPrice])
+
   useEffect(() => {
     tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;
-    tele.MainButton.onClick(() => {
-      tele.MainButton.show();
-    });
-  }, [tele.MainButton, totalPrice]);
+    tele.onEvent('mainButtonClicked', onSendData)
+    return () => {
+      tele.offEvent('mainButtonClicked', onSendData)
+    }
+  }, [onSendData, tele, totalPrice])
 
   return (
     <>
