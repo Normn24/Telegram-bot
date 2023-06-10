@@ -13,19 +13,24 @@ function App() {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    tele.ready();
+    // Збереження даних у локальному сховищі перед закриттям програми
+    const handleBeforeUnload = () => {
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    };
 
-    // Очищення локального сховища перед виходом з програми
-    window.addEventListener('beforeunload', clearLocalStorage);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Очистка даних при наступному запуску програми
+    const savedCartItems = localStorage.getItem('cartItems');
+    if (savedCartItems) {
+      setCartItems(JSON.parse(savedCartItems));
+      localStorage.clear('cartItems');
+    }
 
     return () => {
-      window.removeEventListener('beforeunload', clearLocalStorage);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, []);
-
-  const clearLocalStorage = () => {
-    localStorage.clear();
-  };
+  }, [cartItems]);
 
   const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
