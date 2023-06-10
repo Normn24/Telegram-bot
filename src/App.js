@@ -11,10 +11,36 @@ const tele = window.Telegram.WebApp;
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
-
+  const [count, setCount] = useState(0);
+  const { id } = foods;
   useEffect(() => {
     tele.ready();
   });
+
+  useEffect(() => {
+    // Відновлення значення count з локального сховища при монтажі компонента
+    const savedCount = localStorage.getItem(`count_${foods.id}`);
+    if (savedCount) {
+      setCount(parseInt(savedCount));
+    }
+  }, [id]);
+
+  useEffect(() => {
+    // Збереження значення count у локальному сховищі при зміні
+    localStorage.setItem(`count_${foods.id}`, count.toString());
+  }, [count, id]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.clear(`count_${foods.id}`);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [id]);
 
   const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
