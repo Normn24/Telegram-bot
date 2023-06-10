@@ -108,12 +108,12 @@ function OrderPage({ cartItems, tele }) {
 
   const onSendData = useCallback(() => {
     const data = {
-      products: foods.title,
+      products: cartItems,
       totalPrice: totalPrice.toFixed(2),
       queryId,
     }
     tele.sendData(JSON.stringify(data));
-  }, [queryId, tele, totalPrice])
+  }, [cartItems, queryId, tele, totalPrice])
 
   useEffect(() => {
     tele.MainButton.text = `PAY $${totalPrice.toFixed(2)}`;

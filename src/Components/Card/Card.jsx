@@ -4,7 +4,6 @@ import Button from "../Button/Button";
 
 function Card({ food, onAdd, onRemove }) {
   const [count, setCount] = useState(0);
-  // eslint-disable-next-line no-unused-vars
   const { title, Image, price, id } = food;
 
   useEffect(() => {
