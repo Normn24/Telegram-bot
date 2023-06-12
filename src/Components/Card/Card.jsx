@@ -1,40 +1,40 @@
 import React, { useState, useEffect } from "react";
 import "./Card.css";
 import Button from "../Button/Button";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Card({ food, onAdd, onRemove }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [count, setCount] = useState(0);
   const { title, Image, price, id } = food;
 
   useEffect(() => {
-    const savedCount = localStorage.getItem(`count_${id}`);
+    const params = new URLSearchParams(location.search);
+    const savedCount = params.get(`count_${id}`);
     if (savedCount) {
       setCount(parseInt(savedCount));
     }
-
-    const handleUnload = () => {
-      localStorage.removeItem(`count_${id}`);
-    };
-
-    window.addEventListener("unload", handleUnload);
-
-    return () => {
-      window.removeEventListener("unload", handleUnload);
-    };
-  }, [id]);
-
-  useEffect(() => {
-    localStorage.setItem(`count_${id}`, count.toString());
-  }, [count, id]);
+  }, [id, location.search]);
 
   const handleIncrement = () => {
-    setCount(count + 1);
+    const newCount = count + 1;
+    setCount(newCount);
     onAdd(food);
+    updateURLParams(newCount);
   };
 
   const handleDecrement = () => {
-    setCount(count - 1);
+    const newCount = count - 1;
+    setCount(newCount);
     onRemove(food);
+    updateURLParams(newCount);
+  };
+
+  const updateURLParams = (newCount) => {
+    const params = new URLSearchParams(location.search);
+    params.set(`count_${id}`, newCount);
+    navigate(`?${params.toString()}`);
   };
 
   return (
