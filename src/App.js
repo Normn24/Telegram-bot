@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react
 import './App.css';
 import Cart from './Components/Cart/Cart';
 import Card from './Components/Card/Card';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const { getData } = require("./db/db");
 const foods = getData();
@@ -50,18 +52,20 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />}
-        />
-        <Route
-          path="/order"
-          element={<OrderPage cartItems={cartItems} tele={tele} />}
-        />
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} tele={tele} />}
+          />
+          <Route
+            path="/order"
+            element={<OrderPage cartItems={cartItems} tele={tele} />}
+          />
+        </Routes>
+      </Router>
+    </Provider>
   );
 }
 

@@ -1,39 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Card.css";
+import { useSelector, useDispatch } from "react-redux";
 import Button from "../Button/Button";
+import { incrementCount, decrementCount } from "./cardActions";
 
 function Card({ food, onAdd, onRemove }) {
-  const [count, setCount] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const { title, Image, price, id } = food;
-
-  useEffect(() => {
-    const savedCount = localStorage.getItem(`count_${id}`);
-    if (savedCount) {
-      setCount(parseInt(savedCount));
-    }
-
-    const handleBeforeUnload = () => {
-      localStorage.removeItem(`count_${id}`);
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [id]);
-
-  useEffect(() => {
-    localStorage.setItem(`count_${id}`, count.toString());
-  }, [count, id]);
+  const count = useSelector((state) => state.count);
+  const dispatch = useDispatch();
 
   const handleIncrement = () => {
-    setCount(count + 1);
+    dispatch(incrementCount());
     onAdd(food);
   };
 
   const handleDecrement = () => {
-    setCount(count - 1);
+    dispatch(decrementCount());
     onRemove(food);
   };
 
