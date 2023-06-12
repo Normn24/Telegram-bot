@@ -18,14 +18,14 @@ function Card({ food, onAdd, onRemove }) {
   }, [count, id]);
 
   useEffect(() => {
-    const handleBeforeUnload = () => {
+    const handleUnload = () => {
       localStorage.removeItem(`count_${id}`);
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.onunload = handleUnload;
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.onunload = null;
     };
   }, [id]);
 
