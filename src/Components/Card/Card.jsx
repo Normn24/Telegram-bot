@@ -7,28 +7,24 @@ function Card({ food, onAdd, onRemove }) {
   const { title, Image, price, id } = food;
 
   useEffect(() => {
-    // Відновлення значення count з локального сховища при монтажі компонента
     const savedCount = localStorage.getItem(`count_${id}`);
     if (savedCount) {
       setCount(parseInt(savedCount));
     }
+
+    const handleUnload = () => {
+      localStorage.removeItem(`count_${id}`);
+    };
+
+    window.addEventListener("unload", handleUnload);
+
+    return () => {
+      window.removeEventListener("unload", handleUnload);
+    };
   }, [id]);
 
   useEffect(() => {
-    // Збереження значення count у локальному сховищі при зміні
     localStorage.setItem(`count_${id}`, count.toString());
-  }, [count, id]);
-
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      window.localStorage.removeItem(`count_${id}`);
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
   }, [count, id]);
 
   const handleIncrement = () => {
