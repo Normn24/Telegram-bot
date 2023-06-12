@@ -21,7 +21,7 @@ function Card({ food, onAdd, onRemove }) {
 
   useEffect(() => {
     const handleBeforeUnload = () => {
-      window.localStorage.clear(`count_${id}`);
+      window.localStorage.removeItem(`count_${id}`);
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
