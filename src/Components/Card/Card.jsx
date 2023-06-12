@@ -7,27 +7,15 @@ function Card({ food, onAdd, onRemove }) {
   const { title, Image, price, id } = food;
 
   useEffect(() => {
-    const savedCount = localStorage.getItem(`count_${id}`);
+    const savedCount = sessionStorage.getItem(`count_${id}`);
     if (savedCount) {
       setCount(parseInt(savedCount));
     }
   }, [id]);
 
   useEffect(() => {
-    localStorage.setItem(`count_${id}`, count.toString());
+    sessionStorage.setItem(`count_${id}`, count.toString());
   }, [count, id]);
-
-  useEffect(() => {
-    const handleUnload = () => {
-      localStorage.clear(`count_${id}`);
-    };
-
-    window.onunload = handleUnload;
-
-    return () => {
-      window.onunload = null;
-    };
-  }, [id]);
 
   const handleIncrement = () => {
     const newCount = count + 1;
