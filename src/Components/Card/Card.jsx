@@ -2,32 +2,29 @@ import React, { useState, useEffect } from "react";
 import "./Card.css";
 import Button from "../Button/Button";
 
-const tele = window.Telegram.WebApp;
-
-function Card({ food, onAdd, onRemove }) {
+function Card({ food, onAdd, onRemove, tele }) {
   const [count, setCount] = useState(0);
   const { title, Image, price, id } = food;
 
   useEffect(() => {
-    tele.ready();
     // Відновлення значення count за допомогою Telegram API при монтажі компонента
     const savedCount = tele.myData.getItem(`count_${id}`);
     if (savedCount) {
       setCount(parseInt(savedCount));
     }
-  }, [id]);
+  }, [id, tele.myData]);
 
   useEffect(() => {
     // Збереження значення count за допомогою Telegram API при зміні
     tele.myData.setItem(`count_${id}`, count.toString());
-  }, [count, id]);
+  }, [count, id, tele.myData]);
 
   useEffect(() => {
     // Очищення даних при закритті додатку
     tele.onClose(() => {
       tele.myData.clear();
     });
-  }, []);
+  }, [tele.onClose, tele.myData, tele]);
 
   const handleIncrement = () => {
     setCount(count + 1);
