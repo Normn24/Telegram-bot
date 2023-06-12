@@ -14,18 +14,7 @@ function App() {
 
   useEffect(() => {
     tele.ready();
-
-    // Очищення локального сховища перед виходом з програми
-    window.addEventListener('beforeunload', clearLocalStorage);
-
-    return () => {
-      window.removeEventListener('beforeunload', clearLocalStorage);
-    };
   }, []);
-
-  const clearLocalStorage = () => {
-    window.localStorage.clear();
-  };
 
   const onAdd = (food) => {
     const exist = cartItems.find((x) => x.id === food.id);
