@@ -1,40 +1,32 @@
 import React, { useState, useEffect } from "react";
 import "./Card.css";
 import Button from "../Button/Button";
-import { useNavigate, useLocation } from "react-router-dom";
 
 function Card({ food, onAdd, onRemove }) {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [count, setCount] = useState(0);
   const { title, Image, price, id } = food;
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const savedCount = params.get(`count_${id}`);
+    const savedCount = localStorage.getItem(`count_${id}`);
     if (savedCount) {
       setCount(parseInt(savedCount));
     }
-  }, [id, location.search]);
+  }, [id]);
+
+  useEffect(() => {
+    localStorage.setItem(`count_${id}`, count.toString());
+  }, [count, id]);
 
   const handleIncrement = () => {
     const newCount = count + 1;
     setCount(newCount);
     onAdd(food);
-    updateURLParams(newCount);
   };
 
   const handleDecrement = () => {
     const newCount = count - 1;
     setCount(newCount);
     onRemove(food);
-    updateURLParams(newCount);
-  };
-
-  const updateURLParams = (newCount) => {
-    const params = new URLSearchParams(location.search);
-    params.set(`count_${id}`, newCount);
-    navigate(`?${params.toString()}`);
   };
 
   return (
