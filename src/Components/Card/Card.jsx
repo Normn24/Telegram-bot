@@ -12,14 +12,14 @@ function Card({ food, onAdd, onRemove }) {
       setCount(parseInt(savedCount));
     }
 
-    const handleUnload = () => {
-      localStorage.removeItem(`count_${id}`);
+    const handleBeforeUnload = () => {
+      localStorage.clear("");
     };
 
-    window.addEventListener("unload", handleUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener("unload", handleUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [id]);
 
