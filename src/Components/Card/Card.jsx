@@ -13,7 +13,7 @@ function Card({ food, onAdd, onRemove }) {
     }
 
     const handleBeforeUnload = () => {
-      localStorage.clear("");
+      window.localStorage.clear();
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
