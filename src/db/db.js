@@ -16,6 +16,6 @@ export function getData() {
     { title: "Salad", price: 6.5, Image: saladImg, id: 5 },
     { title: "Water", price: 0.99, Image: waterImg, id: 6 },
     { title: "Cheese", price: 40, Image: cheeseImg, id: 7 },
-    { title: "Smetana", price: 55, Image: smetanaImg, id: 8 },
+    { title: "Smet", price: 55, Image: smetanaImg, id: 8 },
   ];
 }
